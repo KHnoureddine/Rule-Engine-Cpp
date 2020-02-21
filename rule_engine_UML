@@ -27,7 +27,116 @@ It is an extension of the Rule class.
 
 
 
+[underline]#*__code plantUML:__*#
+@startuml
+namespace Api #DDDDDD {
+
+class RulesTree {
+  {field}          
+  {method}RulesTree()
+          boolean isExist() 
+          boolean isEmpty()
+          int registre(Rule rule) 
+          void clear(Rule rule)
+}
+
+class Action {
+  {field} string action
+          List<Action> actions
+  {method}Action()
+          void execute(Facts facts)
+}
+class Condition {
+  {field} string condition
+  {method}Condition()
+          boolean evaluate(Facts facts)
+}
+class Facts {
+  {field} string fact
+  {method}Facts()
+          void put(String name,Facts fact)
+          
+}
+class Rule {
+  {field} String name
+          String decription
+          int priority          
+  {method}Rule() 
+          void Build(Rule rule, Condition condition,  List<Action> actions)   
+}
+
+class RulesEngine {
+  {field}
+  {method}void fire(Rules rules, Facts facts)
+}
+class RulesListener {
+  {field}
+  {method}boolean beforeEvaluate(Rule rule, Facts fact)
+          boolean afterEvaluate(Rule rule, Facts facts)
+          boolean beforeExecute(Rule rule, Facts facts)
+          boolean afterExecute(Rules rules, Facts facts)
+          boolean onSuccess(Rule rule, Facts facts)
+          boolean onFailure(Rule rule, Facts facts)
+}
+class RulesEngineListener {
+  {field}
+  {method}boolean beforeEvaluate(Rule rule, Facts facts)
+          boolean afterExecute(Rule rule, Facts facts)
+}
+Rule o--Action
+Rule o--Condition
+Rule o--Facts
+RulesTree o-- RulesEngine
+RulesTree o-- Rule
 
 
+Action ..> Facts
+Condition ..> Facts
 
-http://www.plantuml.com/plantuml/svg/fLNTRjiy3BtNKn3uRbp0xGDyA8h-D0K6x6hT2wWsdGfm94EIknPTtdsMPJDqGc_8vWi38Gzvo4E6lWrH-zZlMcNr3aEdAuIxpi1_Z-C3dqfLhGu1llKjXkyUSJ01V3O6steFz2JR3kEhg_U4B2uKqFFYN8lQWWcRTnDYSG6oSzV5ZqMWiH4yReSOZqNA3NvuBSBVdAcX6Z9u1b3xkVIxAXfd5tKFoOpTWXuzBDFNWUOwusycRs2jPG-LHzpuZbKViNWQGW8qwPtuC_s3ixLPgw2QdOo50aG1yKstlLuZoqQ1AE4OnuWxRQJhO_6S0z8-b0SE3YMsKMrEnc8PVhBMM7dJJStoyNRUE6_Yn-ew5QVZlkzDMn_6NJAPITDI7kX5Re4lziPkZLsqmYeO-HephLyO-K89eluZ8f6YHR-IRvxa2pREusQQ9-z5bdsEqqr4__km8CLDV7bNr-DaFWgJ9H03dNtkgmf3E8FCsITjsjwl5xW_7Tm_2dw-0d9TeyTTNkPzev-qcMGPunGTocJYxGWUfLJE2bTNDv3ZAI-pgUK2NlzSPYQ7KimACuZS_yCr33APMezr3xsnxyE3yyW_4DCyxdKmLKeZ3u7SYwj3Ldvs_WWe3oSbp3VbhuBAnVt9AMZ17h7HVHlNMoB0kKJojPAF5RN5ZzONsw17Mo6ReboZX2oEal9JEDvLz3mPvMB-b8BVuzIuD4FoCoqASNWSJK8LNBLZq8zNj8KWv34k9fmiRch-hZDNgRFyPs4pNNhoKWbsfWgGAokT4UAqG0tSjsZhVjV-0W00
+RulesListener <|-- RulesEngineListener 
+
+RulesEngine -- RulesListener : < validation
+
+}
+
+namespace Core #DDDDDD {
+
+
+class BasicRule{
+  {field}
+  {method}BasicRule()
+          BasicRule(String name)
+          BasicRule(String name, String description)
+          BasicRule(String name, String description, int priority)
+    
+}
+class DefaultRule{
+  {field}
+  {method}DefaultRule(String name, String description, int priority, Condition condition, List<Action> actions)
+          
+}
+
+class InferenceRulesEngine{
+  {field}
+  {method}InferenceRulesEngine()
+          
+}
+
+
+class RuleBuilder{
+  {field}
+ {method}RuleBuilder()
+         void name(String name)
+         void description(String description)
+         void priority(int priority)
+         void when(Condition condition)
+         void then( List<Action> actions)
+}
+
+Api.Rule <|-- DefaultRule
+Api.Rule <|-- BasicRule
+Api.Rule <|-- RuleBuilder 
+Api.RulesEngine <|-- InferenceRulesEngine 
+
+}
+@enduml
