@@ -1,0 +1,112 @@
+﻿@startuml
+namespace Api #DDDDDD {
+
+class RulesTree {
+  {field}          
+  {method}RulesTree()
+          boolean isExist() 
+          boolean isEmpty()
+          int registre(Rule rule) 
+          void clear(Rule rule)
+}
+
+class Action {
+  {field} string action
+          List<Action> actions
+  {method}Action()
+          void execute(Facts facts)
+}
+class Condition {
+  {field} string condition
+  {method}Condition()
+          boolean evaluate(Facts facts)
+}
+class Facts {
+  {field} string fact
+  {method}Facts()
+          void put(String name,Facts fact)
+          
+}
+class Rule {
+  {field} String name
+          String decription
+          int priority          
+  {method}Rule() 
+          void Build(Rule rule, Condition condition,  List<Action> actions)   
+}
+
+class RulesEngine {
+  {field}
+  {method}void fire(Rules rules, Facts facts)
+}
+class RulesListener {
+  {field}
+  {method}boolean beforeEvaluate(Rule rule, Facts fact)
+          boolean afterEvaluate(Rule rule, Facts facts)
+          boolean beforeExecute(Rule rule, Facts facts)
+          boolean afterExecute(Rules rules, Facts facts)
+          boolean onSuccess(Rule rule, Facts facts)
+          boolean onFailure(Rule rule, Facts facts)
+}
+class RulesEngineListener {
+  {field}
+  {method}boolean beforeEvaluate(Rule rule, Facts facts)
+          boolean afterExecute(Rule rule, Facts facts)
+}
+Rule o--Action
+Rule o--Condition
+Rule o--Facts
+RulesTree o-- RulesEngine
+RulesTree o-- Rule
+
+
+Action ..> Facts
+Condition ..> Facts
+
+RulesListener <|-- RulesEngineListener 
+
+RulesEngine -- RulesListener : < validation
+
+}
+
+namespace Core #DDDDDD {
+
+
+class BasicRule{
+  {field}
+  {method}BasicRule()
+          BasicRule(String name)
+          BasicRule(String name, String description)
+          BasicRule(String name, String description, int priority)
+    
+}
+class DefaultRule{
+  {field}
+  {method}DefaultRule(String name, String description, int priority, Condition condition, List<Action> actions)
+          
+}
+
+class InferenceRulesEngine{
+  {field}
+  {method}InferenceRulesEngine()
+          
+}
+
+
+class RuleBuilder{
+  {field}
+ {method}RuleBuilder()
+         void name(String name)
+         void description(String description)
+         void priority(int priority)
+         void when(Condition condition)
+         void then( List<Action> actions)
+}
+
+Api.Rule <|-- DefaultRule
+Api.Rule <|-- BasicRule
+Api.Rule <|-- RuleBuilder 
+Api.RulesEngine <|-- InferenceRulesEngine 
+
+}
+@enduml
