@@ -1,0 +1,142 @@
+= Rule Engine Cpp
+
+*class RulesTree:* This is the class that includes the decision tree, it is composed of the rules and the rules engine. It ensures the verification of the existence, the availability, the registration and the deletion of a rule.
+
+*class Rule:* It is the class that ensures the specification and creation of a rule in name, description and priority. It is composed of actions, a condition, and facts.
+
+*RulesEngine class:* It is the rules engine class that allows to launch and apply rules according to the facts. The application of the rules is launched after checks and validations on the availability of engines and the evaluation of the conditions of the rules. This engine is implemented by the InferenceRulesEngine class.
+
+*BasicRule class:* It is the class that designates the basic rule or the first rule. It is an extension of the Rule class.
+
+*class DefaultRule:* This is the class that describes the default rule. It is the rule to apply in case no defined rule is checked by its condition. This is a Rule class extension.
+
+*class Action*: This is the class that defines the lists of actions that the engine must execute when checking the rule condition.
+
+class Condition: This is the class that defines the verification condition of a rule.
+
+*class Facts:* This is the class that defines the facts that are used to run the rule engine and launch the expert system.
+
+*class RuleBuilder:* This is the class that builds the rule so that it is ready to be registered in the knowledge base.
+It is an extension of the Rule class.
+
+*class RulesListener: *This is the class that allows you to observe the different stages of rule initiation, where there is rule condition checking and successful execution.
+
+*class RulesEngineListener:* It is the class that allows to control the availability of the engine and the end of the execution.
+
+*class InferenceRulesEngine:* This is the class that implements the engine while ensuring that Rules are selected based on given facts and drawn in their order and that the engine selects and triggers them continuously.
+
+
+
+[underline]#*__code plantUML:__*#  +
+@startuml  +
+namespace Api #DDDDDD {  +
+
+class RulesTree {  +
+  {field}            +
+  {method}RulesTree()  +
+          boolean isExist()   +
+          boolean isEmpty()  +
+          int registre(Rule rule)   +
+          void clear(Rule rule)  +
+}  +
+
+class Action {  +
+  {field} string action  +
+          List<Action> actions  +
+  {method}Action()  +
+          void execute(Facts facts)  +
+}  +
+class Condition {  +
+  {field} string condition  +
+  {method}Condition()  +
+          boolean evaluate(Facts facts)  +
+}  +
+class Facts {  +
+  {field} string fact  +
+  {method}Facts()  +
+          void put(String name,Facts fact)  +
+          
+}  +
+class Rule {  +
+  {field} String name  +
+          String decription  +
+          int priority   +         
+  {method}Rule()   +
+          void Build(Rule rule, Condition condition,  List<Action> actions)     +
+}  +
+
+class RulesEngine {  +
+  {field}  +
+  {method}void fire(Rules rules, Facts facts)  +
+}  +
+class RulesListener {  +
+  {field}  +
+  {method}boolean beforeEvaluate(Rule rule, Facts fact)  +
+          boolean afterEvaluate(Rule rule, Facts facts)  +
+          boolean beforeExecute(Rule rule, Facts facts)  +
+          boolean afterExecute(Rules rules, Facts facts)  +
+          boolean onSuccess(Rule rule, Facts facts)  +
+          boolean onFailure(Rule rule, Facts facts)  +
+}  +
+class RulesEngineListener {  +
+  {field}  +
+  {method}boolean beforeEvaluate(Rule rule, Facts facts)  +
+          boolean afterExecute(Rule rule, Facts facts)  +
+}  +
+Rule o--Action  +
+Rule o--Condition  +
+Rule o--Facts  +
+RulesTree o-- RulesEngine  +
+RulesTree o-- Rule  +
+
+
+Action ..> Facts  +
+Condition ..> Facts  +
+
+RulesListener <|-- RulesEngineListener   +
+
+RulesEngine -- RulesListener : < validation  +
+
+}
+
+namespace Core #DDDDDD {
+
+
+class BasicRule{  +
+  {field}  +
+  {method}BasicRule()  +
+          BasicRule(String name)  +
+          BasicRule(String name, String description)  +
+          BasicRule(String name, String description, int priority)  +
+    
+}  +
+class DefaultRule{  +
+  {field}  +
+  {method}DefaultRule(String name, String description, int priority, Condition condition, List<Action> actions)  +
+          
+}
+  
+class InferenceRulesEngine{  +
+  {field}  +
+  {method}InferenceRulesEngine()  +
+          
+}  +
+
+
+class RuleBuilder{  +
+  {field}  +
+ {method}RuleBuilder()  +
+         void name(String name)  +
+         void description(String description)  +
+         void priority(int priority)  +
+         void when(Condition condition)  +
+         void then( List<Action> actions)  +
+}
+
+Api.Rule <|-- DefaultRule  +
+Api.Rule <|-- BasicRule  +
+Api.Rule <|-- RuleBuilder   +
+Api.RulesEngine <|-- InferenceRulesEngine   +
+
+}  +
+@enduml
