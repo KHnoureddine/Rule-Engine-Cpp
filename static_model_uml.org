@@ -1,43 +1,47 @@
-﻿@startuml
+﻿#+BEGIN_SRC plantuml :file model_uml_rule_engine.png
+@startuml
 namespace Api #DDDDDD {
 
 class RulesTree {
   {field}          
-  {method}RulesTree()
-          boolean isExist() 
-          boolean isEmpty()
-          int registre(Rule rule) 
-          void clear(Rule rule)
+  {method}
+          + boolean exists(string actionName) 
+          + boolean isEmpty()
+          + int register(Rule rule) 
+          + void clear(Rule rule)
+          + void clearAll()
+          + List<string> list()
 }
 
 class Action {
-  {field} string action
-          List<Action> actions
+  {field} string name
   {method}Action()
-          void execute(Facts facts)
+          + void execute(Facts facts)
 }
 class Condition {
-  {field} string condition
+  {field} - string condition
   {method}Condition()
-          boolean evaluate(Facts facts)
+          + boolean evaluate(Facts facts)
 }
 class Facts {
-  {field} string fact
-  {method}Facts()
-          void put(String name,Facts fact)
-          
+  {field} string factName
+          string value
+  {method}
+          + Facts(string name,string value)
 }
+
 class Rule {
   {field} String name
-          String decription
+          String description
           int priority          
-  {method}Rule() 
-          void Build(Rule rule, Condition condition,  List<Action> actions)   
+  {method}
 }
 
 class RulesEngine {
   {field}
-  {method}void fire(Rules rules, Facts facts)
+  {method}
+     + void fire(Rules rules, Facts facts)
+     + void registerRule(Rule rule,Condition when,Action action)
 }
 class RulesListener {
   {field}
@@ -74,11 +78,7 @@ namespace Core #DDDDDD {
 
 class BasicRule{
   {field}
-  {method}BasicRule()
-          BasicRule(String name)
-          BasicRule(String name, String description)
-          BasicRule(String name, String description, int priority)
-    
+  {method}
 }
 class DefaultRule{
   {field}
@@ -110,3 +110,7 @@ Api.RulesEngine <|-- InferenceRulesEngine
 
 }
 @enduml
+#+END_SRC
+
+#+RESULTS:
+[[file:model_uml_rule_engine.png]]
