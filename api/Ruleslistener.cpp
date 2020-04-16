@@ -47,10 +47,16 @@ int RulesListener::afterExecute(RulesTree rules, Fact facts,int codeRes){
 	numFact=codeRes/10;
 	lastFact=codeRes %10;
 
-	if(numFact<=rules.rules.size()){
+	if(numFact==rules.rules.size()){
 		if(lastFact==0){
 			afterExecuteReturn=1;
 			cout<<"execute all Rules with success"<<endl;
+		}
+	}
+	else if(numFact<rules.rules.size()){
+		if(lastFact==0){
+			afterExecuteReturn=1;
+			cout<<"execute "<<numFact<<" Rules with success"<<endl;
 		}
 	}
 	else {
