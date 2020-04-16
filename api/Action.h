@@ -8,13 +8,14 @@ class Action
 public:
  string actionName;
  string actionRole;
+ int    actionFollowing;
  vector <Action> then;
 
   Action();
  ~Action();
-  Action(string actionName, string actionRole);
+  Action(string actionName, string actionRole,int    actionFollowing);
   void addAction(Action action);
-  void execute(Fact fact);
+  int execute(Fact fact);
 
 };
 #endif /* ACTION_H_ */

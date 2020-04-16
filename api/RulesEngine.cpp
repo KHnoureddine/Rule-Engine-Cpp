@@ -3,19 +3,24 @@
 RulesEngine::RulesEngine(){
 
 }
+
 RulesEngine::~RulesEngine(){
 
 }
 
 
-void RulesEngine::fire(RulesTree rules, Fact facts){
-	InferenceRulesEngine inferenceRulesEngine;
-	RulesListener rulesListener;
+int RulesEngine::fire(RulesTree rules, Fact facts){
 
-	rulesListener.beforeExecute(rules, facts);
+	RulesListener rulesListener;
+	InferenceRulesEngine inferenceRulesEngine;
+	int res=0;
 
 	if(rulesListener.beforeEvaluate(rules, facts)){
-		inferenceRulesEngine.InferenceEngine(rules, facts);
+		Fact factsNew;
+		factsNew=rulesListener.afterEvaluate(rules, facts);
+		res=inferenceRulesEngine.InferenceEngine(rules, factsNew);
+		rulesListener.afterExecute(rules, factsNew,res);
+
 	}
 
 

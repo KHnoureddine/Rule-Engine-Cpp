@@ -18,11 +18,11 @@ class Condition {
 		int what=0;//neither
 
 		if(conditionOp=="greater"){
-			if (conditionValidator <= factVal )
+			if (conditionValidator < factVal )
 				what=1;
 		}
 		else if(conditionOp=="less"){
-			if (conditionValidator >= factVal )
+			if (conditionValidator > factVal )
 				what=2;
 		}
 		else if(conditionOp=="equal"){

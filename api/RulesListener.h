@@ -9,10 +9,7 @@ class RulesListener {
 	~RulesListener();
 
  bool beforeEvaluate(RulesTree rules, Fact facts);
- bool afterEvaluate(RulesTree rules, Fact facts);
- bool beforeExecute(RulesTree rules, Fact facts);
- bool afterExecute(RulesTree rules, Fact facts);
- bool onSuccess(RulesTree rules, Fact facts);
- bool onFailure(RulesTree rules, Fact facts);
+ Fact afterEvaluate(RulesTree rules, Fact facts);
+ int  afterExecute(RulesTree rules, Fact facts,int codeRes);
 };
 #endif /* RULESLISTENER_H_ */

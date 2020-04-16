@@ -4,21 +4,19 @@ InferenceRulesEngine::InferenceRulesEngine(){}
 
 InferenceRulesEngine::~InferenceRulesEngine(){}
 
-void InferenceRulesEngine::InferenceEngine(RulesTree rules, Fact facts){
-
-	for(int i=0;i<facts.facts.size();i++){
-
+int InferenceRulesEngine::InferenceEngine(RulesTree rules, Fact facts){
+	int InferenceEngineReturn = 0;
+    int i=0;
+    int factsPosition=0;
+	while(factsPosition<facts.facts.size()){
 		for(int j=0;j<rules.rules.size();j++){
-
 			if( facts.facts[i].factName == rules.rules[j].name){
-
-//				cout<<"I find it "<<rules.rules[j].name<<" "<<j<<" "<<facts.facts[i].factName<<" "<<i<<" "<<endl;
-//				cout<<rules.rules[j].evaluate(facts.facts[i])<<endl;
-				rules.rules[j].ruleActions[rules.rules[j].evaluate(facts.facts[i])].execute(facts);
-
+				InferenceEngineReturn=rules.rules[j].ruleActions[rules.rules[j].evaluate(facts.facts[i])].execute(facts);
 			}
 		}
-
-
+		i=InferenceEngineReturn;
+		factsPosition++;
+		if(i==0)break;
 	}
+	return (factsPosition*10+i);
 };

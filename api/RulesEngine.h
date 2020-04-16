@@ -7,7 +7,7 @@ class RulesEngine {
 	public:
  RulesEngine();
 ~RulesEngine();
-void fire(RulesTree rules, Fact facts);
+int fire(RulesTree rules, Fact facts);
 
 };
 #endif /* RULESENGINE_H_ */

@@ -8,6 +8,6 @@ class InferenceRulesEngine{
 	public:
 	InferenceRulesEngine();
 	~InferenceRulesEngine();
-	void InferenceEngine(RulesTree rules, Fact facts);
+	int InferenceEngine(RulesTree rules, Fact facts);
 };
 #endif /* INFERENCERULES_H_ */
